@@ -23,7 +23,7 @@ contract MintableToken is ERC20 {
     }
 }
 
-contract MorphoLendPolicyTest is Test {
+contract MorphoLendingPolicyTest is Test {
     // keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)")
     bytes32 internal constant DOMAIN_TYPEHASH = 0x8b73c3c69bb8fe3d512ecc4cf759cc79239f7b179b0ffacaa9a75d522b39400f;
     bytes32 internal constant EXECUTION_TYPEHASH = keccak256(
@@ -101,7 +101,7 @@ contract MorphoLendPolicyTest is Test {
         return abi.encode(aoa, abi.encode(cfg));
     }
 
-    // (Old config constructor removed; policyConfig/binding now built above.)
+    // (Old config constructor removed; policyConfig and binding are now built above.)
     /*
         MorphoLendPolicy.Config memory cfg = MorphoLendPolicy.Config({
             executor: executor,
@@ -132,7 +132,7 @@ contract MorphoLendPolicyTest is Test {
         loanToken.mint(address(account), supplyAmt);
         assertEq(loanToken.balanceOf(address(account)), supplyAmt);
 
-        // Ergonomics: observe recurring allowance state before/after execution.
+        // Observability: check recurring allowance state before and after execution.
         bytes32 policyId = policyManager.getPolicyBindingStructHash(binding);
         (RecurringAllowance.PeriodUsage memory lastBefore, RecurringAllowance.PeriodUsage memory currentBefore) =
             policy.getDepositLimitPeriodUsage(policyId, address(account), policyConfig);
